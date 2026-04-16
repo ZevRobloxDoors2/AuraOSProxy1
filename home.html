@@ -1,9 +1,17 @@
-<script src="/uv/uv.bundle.js" defer></script>
-<script src="/uv/uv.config.js" defer></script>
-<script src="/register-sw.js" defer></script>
-<script src="/search.js" defer></script>
-<script src="/error.js" defer></script>
-<link href="index.css" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home | Aura OS</title>
+  <link href="./index.css" rel="stylesheet">
+</head>
+<body>
+<script src="./uv/uv.bundle.js" defer></script>
+<script src="./uv/uv.config.js" defer></script>
+<script src="./register-sw.js" defer></script>
+<script src="./search.js" defer></script>
+<script src="./error.js" defer></script>
 <form class="searchform" id="searchform">
   <input id="searchbar" placeholder="Search the web freely">
 </form>
@@ -28,18 +36,22 @@
   var searchform=document.getElementById("searchform");
 
   var fontsize=2560/screen.width*17.5;
-  document.getElementById("title").style.fontSize=fontsize+"px";
+  var titleEl = document.getElementById("title");
+  if (titleEl) titleEl.style.fontSize=fontsize+"px";
   
   searchform.addEventListener("submit", async (event) => {
     event.preventDefault();
     try {
-      await registerSW();
+      if (typeof registerSW === 'function') {
+        await registerSW();
+      }
     } catch (err) {
-      alert(err.toString());
-      throw err;
+      console.error("Service worker error:", err.toString());
     }
-    const url = search(searchbar.value, "https://www.google.com/search?q=%s");
-    window.location.href = __uv$config.prefix + __uv$config.encodeUrl(url);
+    if (typeof search === 'function' && typeof __uv$config !== 'undefined') {
+      const url = search(searchbar.value, "https://www.google.com/search?q=%s");
+      window.location.href = __uv$config.prefix + __uv$config.encodeUrl(url);
+    }
   });
 </script>
 <style>
@@ -141,3 +153,5 @@ a {
   }
 }
 </style>
+</body>
+</html>

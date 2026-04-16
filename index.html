@@ -1,67 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
     content="Aura OS, Experience the global internet using Aura OS, the fastest Proxy in the world The best looking proxy there is with Apps and tab cloaking surf the web with blazing speeds with Aura OS !" />
   <title>Home | Aura OS</title>
-  <link rel="icon" href="/assets/img/favicon.png">
- <link rel="stylesheet" href="/style.css" />
+  <link rel="icon" href="./assets/img/favicon.png">
+  <link rel="stylesheet" href="./style.css" />
 </head>
-
+<body>
+<ul class="navbar">
+    <li class="nav-item"><a href="javascript:void(0)">Apps</a></li>
+    <li class="nav-item"><a href="javascript:void(0)">Tabs</a></li>
+    <li class="nav-item"><a href="javascript:void(0)">Settings</a></li>
 </ul>
 <form class="searchform" id="searchform">
   <input id="searchbar" placeholder="Search the web freely">
 </form>
-<b>
 <div id="title"><h1>Aura OS</h1></div>
-</b>
-      <div class="particles" aria-hidden="true">
-      <div class="particle" style="--d: 0s, 0s;">.</div>
-      <div class="particle" style="--d: 1s, 1s;">.</div>
-      <div class="particle" style="--d: 6s, 0.5s;">.</div>
-      <div class="particle" style="--d: 4s, 2s;">.</div>
-      <div class="particle" style="--d: 2s, 2s;">.</div>
-      <div class="particle" style="--d: 8s, 3s;">.</div>
-      <div class="particle" style="--d: 6s, 2s;">.</div>
-      <div class="particle" style="--d: 2.5s, 1s;">.</div>
-      <div class="particle" style="--d: 1s, 0s;">.</div>
-      <div class="particle" style="--d: 3s, 1.5s;">.</div>
-<script src="/uv/uv.bundle.js" defer></script>
-<script src="/uv/uv.config.js" defer></script>
-<script src="/register-sw.js" defer></script>
-<script src="/search.js" defer></script>
-<script src="/error.js" defer></script>
+<div class="particles" aria-hidden="true">
+  <div class="particle" style="--d: 0s, 0s;">.</div>
+  <div class="particle" style="--d: 1s, 1s;">.</div>
+  <div class="particle" style="--d: 6s, 0.5s;">.</div>
+  <div class="particle" style="--d: 4s, 2s;">.</div>
+  <div class="particle" style="--d: 2s, 2s;">.</div>
+  <div class="particle" style="--d: 8s, 3s;">.</div>
+  <div class="particle" style="--d: 6s, 2s;">.</div>
+  <div class="particle" style="--d: 2.5s, 1s;">.</div>
+  <div class="particle" style="--d: 1s, 0s;">.</div>
+  <div class="particle" style="--d: 3s, 1.5s;">.</div>
+</div>
+<iframe id="frame" style="display:none;"></iframe>
+
+<script src="./uv/uv.bundle.js" defer></script>
+<script src="./uv/uv.config.js" defer></script>
+<script src="./register-sw.js" defer></script>
+<script src="./search.js" defer></script>
+<script src="./error.js" defer></script>
 <script>
   var searchbar=document.getElementById("searchbar");
   var searchform=document.getElementById("searchform");
 
   var fontsize=2560/screen.width*17.5;
   var fontsize2=2560/screen.width*6.5;
-  document.getElementById("title").style.fontSize=fontsize+"px";
-  document.getElementById("searchbar").style.fontSize=fontsize2+"px";
+  var titleEl = document.getElementById("title");
+  if (titleEl) titleEl.style.fontSize=fontsize+"px";
+  if (searchbar) searchbar.style.fontSize=fontsize2+"px";
   
   searchform.addEventListener("submit", async (event) => {
     event.preventDefault();
     try {
-      await registerSW();
+      if (typeof registerSW === 'function') {
+        await registerSW();
+      }
     } catch (err) {
-      alert(err.toString());
-      throw err;
+      console.error("Service worker registration error:", err.toString());
     }
-    const url = search(searchbar.value, "https://www.google.com/search?q=%s");
-    window.location.href = __uv$config.prefix + __uv$config.encodeUrl(url);
+    if (typeof search === 'function' && __uv$config) {
+      const url = search(searchbar.value, "https://www.google.com/search?q=%s");
+      window.location.href = __uv$config.prefix + __uv$config.encodeUrl(url);
+    }
   });
 </script>
 <script>
   var frame=document.getElementById("frame");
   function get_cookie(cookie_name) { const value = "; " + document.cookie; const parts = value.split("; " + cookie_name + "="); if (parts.length === 2) return parts.pop().split(";").shift(); } 
-  if (get_cookie("location")!=null){
-          frame.src=get_cookie("location");
+  if (frame) {
+    if (get_cookie("location")!=null){
+      frame.src=get_cookie("location");
+    }
+    var navbar = document.getElementsByClassName("navbar")[0];
+    if (navbar) {
+      frame.style.height=(window.innerHeight-navbar.offsetHeight+5)+"px";
+      setInterval(function(){
+        document.cookie="location="+frame.contentWindow.location.href.replace(window.location.origin,"")+"; expires=Thu, 18 Dec 9013 12:00:00 UTC; path=/";
+      },100);
+    }
   }
-  frame.style.height=(window.innerHeight-document.getElementsByClassName("navbar")[0].offsetHeight+5)+"px";
-  setInterval(function(){
-          document.cookie="location="+frame.contentWindow.location.href.replace(window.location.origin,"")+"; expires=Thu, 18 Dec 9013 12:00:00 UTC; path=/";
-  },100);
 </script>
 <script>
     function checkPopups() {
@@ -76,7 +92,7 @@
     }
 
     function say1() {
-      alert("HELL0! for auto cloaking in about:blank please allow pop ups!");
+      alert("HELLO! For auto cloaking in about:blank please allow pop ups!");
     }
 
     window.addEventListener('load', function () {
@@ -108,4 +124,6 @@
       location.reload(true);
     }
   });
-      </script>
+</script>
+</body>
+</html>
