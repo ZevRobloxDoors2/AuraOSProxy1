@@ -6,7 +6,7 @@
   <meta name="description"
     content="Chrome Reworked, Experience the global internet using Chrome Reworked, the fastest Proxy in the world The best looking proxy there is with Apps and tab cloaking surf the web with blazing speeds with Chrome Reworked !" />
   <title>Home | Chrome Reworked</title>
-  <link rel="icon" href="../app/icons/favicon.png">
+  <link rel="icon" href="./app/icons/favicon.png">
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap");
     
@@ -185,8 +185,8 @@
 </div>
 <iframe id="frame"></iframe>
 
-<script src="../app/uv/uv.bundle.js" defer></script>
-<script src="../app/uv/uv.config.js" defer></script>
+<script src="./app/uv/uv.bundle.js" defer></script>
+<script src="./app/uv/uv.config.js" defer></script>
 
 <script>
   // ===== Search Function (from search.js) =====
@@ -208,7 +208,7 @@
   }
 
   // ===== Service Worker Registration (from register-sw.js) =====
-  const stockSW = "../app/uv-sw.js";
+  const stockSW = "./app/uv-sw.js";
   const swAllowedHostnames = ["localhost", "127.0.0.1"];
 
   async function registerSW() {
